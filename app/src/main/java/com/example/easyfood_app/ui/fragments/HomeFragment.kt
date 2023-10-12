@@ -22,7 +22,6 @@ import com.example.easyfood_app.mvvm.DetailsMVVM
 import com.example.easyfood_app.mvvm.MainFragMVVM
 import com.example.easyfood_app.ui.activites.MealActivity
 import com.example.easyfood_app.ui.MealBottomDialog
-import com.example.easyfood_app.ui.activites.MealDetailesActivity
 import com.example.easyfood_app.extensions.Constants.Companion.CATEGORY_NAME
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_AREA
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_ID
@@ -36,6 +35,7 @@ import com.example.easyfood_app.data.pojo.MealDetail
 import com.example.easyfood_app.data.pojo.MealsResponse
 import com.example.easyfood_app.data.pojo.RandomMealResponse
 import com.example.easyfood_app.databinding.FragmentHomeBinding
+import com.example.easyfood_app.ui.activites.MealDetailsActivity
 
 
 class HomeFragment : Fragment() {
@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
 
         mostPopularFoodAdapter.setOnClickListener(object : OnItemClick {
             override fun onItemClick(meal: Meal) {
-                val intent = Intent(activity, MealDetailesActivity::class.java)
+                val intent = Intent(activity, MealDetailsActivity::class.java)
                 intent.putExtra(MEAL_ID, meal.idMeal)
                 intent.putExtra(MEAL_STR, meal.strMeal)
                 intent.putExtra(MEAL_THUMB, meal.strMealThumb)
@@ -165,7 +165,7 @@ class HomeFragment : Fragment() {
     private fun onRndomMealClick() {
         binding.randomMeal.setOnClickListener {
             val temp = meal.meals[0]
-            val intent = Intent(activity, MealDetailesActivity::class.java)
+            val intent = Intent(activity, MealDetailsActivity::class.java)
             intent.putExtra(MEAL_ID, temp.idMeal)
             intent.putExtra(MEAL_STR, temp.strMeal)
             intent.putExtra(MEAL_THUMB, temp.strMealThumb)

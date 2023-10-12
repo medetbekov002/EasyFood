@@ -9,72 +9,69 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.easyfood_app.R
 import com.example.easyfood_app.data.pojo.Meal
 import com.example.easyfood_app.mvvm.MealActivityMVVM
+import com.example.easyfood_app.extensions.Constants.Companion.CATEGORY_NAME
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_ID
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_STR
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_THUMB
-import com.example.easyfood_app.R
 import com.example.easyfood_app.adapters.MealRecyclerAdapter
 import com.example.easyfood_app.adapters.SetOnMealClickListener
 import com.example.easyfood_app.databinding.ActivityCategoriesBinding
-import com.example.easyfood_app.extensions.Constants.Companion.CATEGORY_NAME
 
 class MealActivity : AppCompatActivity() {
     private lateinit var mealActivityMvvm: MealActivityMVVM
     private lateinit var binding: ActivityCategoriesBinding
     private lateinit var myAdapter: MealRecyclerAdapter
-    private var categoryNme = ""
+    private var categoryName = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoriesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mealActivityMvvm = ViewModelProviders.of(this)[MealActivityMVVM::class.java]
+        mealActivityMvvm = ViewModelProviders.of(this).get(MealActivityMVVM::class.java)
         startLoading()
         prepareRecyclerView()
         mealActivityMvvm.getMealsByCategory(getCategory())
-        mealActivityMvvm.observeMeal().observe(this, object : Observer<List<Meal>> {
-            override fun onChanged(t: List<Meal>?) {
-                if(t==null){
-                    hideLoading()
-                    Toast.makeText(applicationContext, "No meals in this category", Toast.LENGTH_SHORT).show()
-                    onBackPressed()
-                }else {
-                    myAdapter.setCategoryList(t!!)
-                    binding.tvCategoryCount.text = categoryNme + " : " + t.size.toString()
-                    hideLoading()
-                }
+        mealActivityMvvm.observeMeal().observe(this, Observer { meals ->
+            if (meals == null) {
+                hideLoading()
+                Toast.makeText(applicationContext, "No meals in this category", Toast.LENGTH_SHORT).show()
+                onBackPressed()
+            } else {
+                myAdapter.setCategoryList(meals)
+                binding.tvCategoryCount.text = "$categoryName : ${meals.size}"
+                hideLoading()
             }
         })
 
         myAdapter.setOnMealClickListener(object : SetOnMealClickListener {
             override fun setOnClickListener(meal: Meal) {
-                val intent = Intent(applicationContext, MealDetailesActivity::class.java)
-                intent.putExtra(MEAL_ID, meal.idMeal)
-                intent.putExtra(MEAL_STR, meal.strMeal)
-                intent.putExtra(MEAL_THUMB, meal.strMealThumb)
+                val intent = Intent(applicationContext, MealDetailesActivity::class.java).apply {
+                    putExtra(MEAL_ID, meal.idMeal)
+                    putExtra(MEAL_STR, meal.strMeal)
+                    putExtra(MEAL_THUMB, meal.strMealThumb)
+                }
                 startActivity(intent)
             }
         })
     }
 
     private fun hideLoading() {
-        binding.apply {
-            loadingGifMeals.visibility = View.INVISIBLE
-            mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
-        }    }
+        binding.loadingGifMeals.visibility = View.INVISIBLE
+        binding.mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.white))
+    }
 
     private fun startLoading() {
-        binding.apply {
-            loadingGifMeals.visibility = View.VISIBLE
-            mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.g_loading))
-        }
+        binding.loadingGifMeals.visibility = View.VISIBLE
+        binding.mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.g_loading))
     }
 
     private fun getCategory(): String {
         val tempIntent = intent
         val x = intent.getStringExtra(CATEGORY_NAME)!!
-        categoryNme = x
+        categoryName = x
         return x
     }
 

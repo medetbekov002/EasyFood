@@ -20,7 +20,7 @@ class FavoriteMealsRecyclerAdapter :
         notifyDataSetChanged()
     }
 
-    fun getMelaByPosition(position: Int): MealDB {
+    fun getMealByPosition(position: Int): MealDB {
         return favoriteMeals[position]
     }
 
@@ -72,5 +72,6 @@ class FavoriteMealsRecyclerAdapter :
 
     interface OnFavoriteLongClickListener {
         fun onFavoriteLongCLick(meal: MealDB)
+        fun onFavoriteLongClick(meal: MealDB)
     }
 }

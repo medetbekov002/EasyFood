@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.easyfood_app.data.pojo.MealDetail
 import com.example.easyfood_app.mvvm.SearchMVVM
-import com.example.easyfood_app.ui.activites.MealDetailesActivity
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_ID
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_STR
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_THUMB
 import com.example.easyfood_app.adapters.MealRecyclerAdapter
 import com.example.easyfood_app.databinding.FragmentSearchBinding
+import com.example.easyfood_app.ui.activites.MealDetailsActivity
 
 class SearchFragment : Fragment() {
     private lateinit var myAdapter: MealRecyclerAdapter
@@ -52,7 +52,7 @@ class SearchFragment : Fragment() {
 
     private fun setOnMealCardClick() {
         binding.searchedMealCard.setOnClickListener {
-            val intent = Intent(context, MealDetailesActivity::class.java)
+            val intent = Intent(context, MealDetailsActivity::class.java)
 
             intent.putExtra(MEAL_ID, mealId)
             intent.putExtra(MEAL_STR, mealStr)
@@ -73,28 +73,26 @@ class SearchFragment : Fragment() {
 
     private fun observeSearchLiveData() {
         searchMvvm.observeSearchLiveData()
-            .observe(viewLifecycleOwner, object : Observer<MealDetail> {
-                override fun onChanged(t: MealDetail?) {
-                    if (t == null) {
-                        Toast.makeText(context, "No such a meal", Toast.LENGTH_SHORT).show()
-                    } else {
-                        binding.apply {
+            .observe(viewLifecycleOwner, Observer { t ->
+                if (t == null) {
+                    Toast.makeText(context, "No such a meal", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.apply {
+                        mealId = t.idMeal
+                        mealStr = t.strMeal
+                        mealThub = t.strMealThumb
 
-                            mealId = t.idMeal
-                            mealStr = t.strMeal
-                            mealThub = t.strMealThumb
+                        Glide.with(requireContext().applicationContext)
+                            .load(t.strMealThumb)
+                            .into(imgSearchedMeal)
 
-                            Glide.with(context!!.applicationContext)
-                                .load(t.strMealThumb)
-                                .into(imgSearchedMeal)
-
-                            tvSearchedMeal.text = t.strMeal
-                            searchedMealCard.visibility = View.VISIBLE
-                        }
+                        tvSearchedMeal.text = t.strMeal
+                        searchedMealCard.visibility = View.VISIBLE
                     }
                 }
             })
     }
+
 
 
 }
