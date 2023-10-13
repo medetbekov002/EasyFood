@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.easyfood_app.ui.activites.MealDetailesActivity
 import com.example.easyfood_app.R
 import com.example.easyfood_app.extensions.Constants.Companion.CATEGORY_NAME
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_AREA
@@ -16,6 +15,7 @@ import com.example.easyfood_app.extensions.Constants.Companion.MEAL_ID
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_NAME
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_STR
 import com.example.easyfood_app.extensions.Constants.Companion.MEAL_THUMB
+import com.example.easyfood_app.ui.activites.MealDetailsActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MealBottomDialog() : BottomSheetDialogFragment() {
@@ -51,7 +51,7 @@ class MealBottomDialog() : BottomSheetDialogFragment() {
         prepareView(view)
 
         view.setOnClickListener {
-            val intent = Intent(context, MealDetailesActivity::class.java)
+            val intent = Intent(context, MealDetailsActivity::class.java)
             intent.putExtra(MEAL_ID,mealId)
             intent.putExtra(MEAL_STR,mealName)
             intent.putExtra(MEAL_THUMB,mealImg)

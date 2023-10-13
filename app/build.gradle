@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.easyfood_app'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.easyfood_app"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -88,4 +88,7 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Activities
+    implementation 'androidx.activity:activity:1.8.0'
 }

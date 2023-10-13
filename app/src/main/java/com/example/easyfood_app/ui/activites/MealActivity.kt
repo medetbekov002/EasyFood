@@ -48,7 +48,7 @@ class MealActivity : AppCompatActivity() {
 
         myAdapter.setOnMealClickListener(object : SetOnMealClickListener {
             override fun setOnClickListener(meal: Meal) {
-                val intent = Intent(applicationContext, MealDetailesActivity::class.java).apply {
+                val intent = Intent(applicationContext, MealDetailsActivity::class.java).apply {
                     putExtra(MEAL_ID, meal.idMeal)
                     putExtra(MEAL_STR, meal.strMeal)
                     putExtra(MEAL_THUMB, meal.strMealThumb)
